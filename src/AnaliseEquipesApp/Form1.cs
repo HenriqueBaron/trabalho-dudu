@@ -15,5 +15,19 @@ namespace AnaliseEquipesApp
         public Form1() {
             InitializeComponent();
         }
+
+        private void CarregarToolStripMenuItem_Click(object sender, EventArgs e) {
+            OpenFileDialog dialogArquivo = new OpenFileDialog();
+            dialogArquivo.Filter = "Arquivos separados por vírgulas (*.csv)|*.csv|" +
+                "Todos os arquivos (*.*)|*.*";
+            DialogResult resultado = dialogArquivo.ShowDialog();
+            if (resultado == DialogResult.OK) {
+                string caminhoArquivo = dialogArquivo.FileName;
+            }
+        }
+
+        private void SairToolStripMenuItem_Click(object sender, EventArgs e) {
+            this.Close();
+        }
     }
 }
