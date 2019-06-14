@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnaliseEquipesApp", "AnaliseEquipesApp\AnaliseEquipesApp.csproj", "{68D23C5C-F58A-4EF3-8B28-CC315C19203B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{68D23C5C-F58A-4EF3-8B28-CC315C19203B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68D23C5C-F58A-4EF3-8B28-CC315C19203B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68D23C5C-F58A-4EF3-8B28-CC315C19203B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68D23C5C-F58A-4EF3-8B28-CC315C19203B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FF39C2BD-A96B-466C-8D3B-9668CED33310}
+	EndGlobalSection
+EndGlobal
