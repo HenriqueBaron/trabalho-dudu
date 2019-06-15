@@ -59,8 +59,8 @@ namespace AnaliseEquipesApp
                         Nome = elementosLinha[0],
                         Equipe = elementosLinha[1],
                         Posicao = elementosLinha[2],
-                        Altura = float.Parse(elementosLinha[3], CultureInfo.InvariantCulture.NumberFormat),
-                        Peso = float.Parse(elementosLinha[4], CultureInfo.InvariantCulture.NumberFormat),
+                        Altura = float.Parse(elementosLinha[3], CultureInfo.InvariantCulture.NumberFormat) * 0.0254f,
+                        Peso = float.Parse(elementosLinha[4], CultureInfo.InvariantCulture.NumberFormat) * 0.453592f,
                         Idade = float.Parse(elementosLinha[5], CultureInfo.InvariantCulture.NumberFormat)
                     };
                     jogadores.Add(jogador);
