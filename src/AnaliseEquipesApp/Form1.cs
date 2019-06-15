@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,11 +25,48 @@ namespace AnaliseEquipesApp
             DialogResult resultado = dialogArquivo.ShowDialog();
             if (resultado == DialogResult.OK) {
                 string caminhoArquivo = dialogArquivo.FileName;
+                try {
+                    // Processa os dados do arquivo e transforma em uma lista de jogadores.
+                    List<Jogador> jogadors = CarregarJogadores(caminhoArquivo);
+                }
+                catch (Exception ex) {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 
         private void SairToolStripMenuItem_Click(object sender, EventArgs e) {
             this.Close();
+        }
+
+        private List<Jogador> CarregarJogadores(string caminhoArquivoDados) {
+            List<Jogador> jogadores = new List<Jogador>();
+            if (string.IsNullOrEmpty(caminhoArquivoDados)) {
+                throw new ArgumentNullException(nameof(caminhoArquivoDados));
+            }
+            if (!File.Exists(caminhoArquivoDados)) {
+                throw new FileNotFoundException("O arquivo com os dados dos jogadores não foi encontrado.", caminhoArquivoDados);
+            }
+            using (StreamReader sr = File.OpenText(caminhoArquivoDados)) {
+                string linha = sr.ReadLine(); // Consome a primeira linha do arquivo, que é o cabeçalho
+                while (sr.Peek() >= 0) {
+                    linha = sr.ReadLine();
+                    string[] elementosLinha = linha.Split(';');
+                    if (elementosLinha.Length < 6) {
+                        throw new FileLoadException("Os dados no arquivo de jogadores estão em um formato inválido.");
+                    }
+                    Jogador jogador = new Jogador() {
+                        Nome = elementosLinha[0],
+                        Equipe = elementosLinha[1],
+                        Posicao = elementosLinha[2],
+                        Altura = float.Parse(elementosLinha[3], CultureInfo.InvariantCulture.NumberFormat),
+                        Peso = float.Parse(elementosLinha[4], CultureInfo.InvariantCulture.NumberFormat),
+                        Idade = float.Parse(elementosLinha[5], CultureInfo.InvariantCulture.NumberFormat)
+                    };
+                    jogadores.Add(jogador);
+                }
+            }
+            return jogadores;
         }
     }
 }
