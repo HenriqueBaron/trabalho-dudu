@@ -15,11 +15,20 @@ namespace AnaliseEquipesApp
 {
     public partial class Form1 : Form
     {
+        readonly string titloGraficoPizza = "Quantidade de jogadores por idade";
+
         public Form1() {
             InitializeComponent();
             chrAlturas.Palette = ChartColorPalette.BrightPastel;
             chrAlturas.Titles.Add("Média de altura dos times");
             chrAlturas.ChartAreas[0].AxisY.Maximum = 2;
+
+            chrIdades.Legends.Clear();
+            chrIdades.Legends.Add("Legenda");
+            chrIdades.Legends[0].Title = titloGraficoPizza;
+            chrIdades.Series.Clear();
+            chrIdades.Series.Add(titloGraficoPizza);
+            chrIdades.Series[titloGraficoPizza].ChartType = SeriesChartType.Pie;
         }
 
         private void CarregarToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -42,7 +51,19 @@ namespace AnaliseEquipesApp
         }
 
         private void AtualizarGraficoIdades(List<Jogador> jogadores) {
-            MessageBox.Show("Atualizado o gráfico de idades");
+            chrIdades.Series.Clear();
+            chrIdades.Series.Add(titloGraficoPizza);
+            chrIdades.Series[titloGraficoPizza].ChartType = SeriesChartType.Pie;
+            var resultados = jogadores.GroupBy(j => new { Idade = Math.Floor(j.Idade) })
+                .Select(j => new {
+                    j.Key.Idade,
+                    Quantidade = j.Count()
+                })
+                .OrderBy(j => j.Idade)
+                .ToList();
+            foreach (var resultado in resultados) {
+                chrIdades.Series[titloGraficoPizza].Points.AddXY(resultado.Idade, resultado.Quantidade);
+            }
         }
 
         private void AtualizarGraficoAlturas(List<Jogador> jogadores) {
@@ -51,7 +72,9 @@ namespace AnaliseEquipesApp
                 .Select(j => new {
                     j.Key.Equipe,
                     AlturaMedia = j.Average(n => n.Altura)
-                }).ToList();
+                })
+                .OrderBy(j => j.Equipe)
+                .ToList();
             foreach (var resultado in resultados) {
                 Series series = chrAlturas.Series.Add(resultado.Equipe);
                 series.Points.Add(resultado.AlturaMedia);
