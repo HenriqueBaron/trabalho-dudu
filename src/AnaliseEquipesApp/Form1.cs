@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace AnaliseEquipesApp
 {
@@ -16,6 +17,9 @@ namespace AnaliseEquipesApp
     {
         public Form1() {
             InitializeComponent();
+            chrAlturas.Palette = ChartColorPalette.BrightPastel;
+            chrAlturas.Titles.Add("Média de altura dos times");
+            chrAlturas.ChartAreas[0].AxisY.Maximum = 2;
         }
 
         private void CarregarToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -27,11 +31,30 @@ namespace AnaliseEquipesApp
                 string caminhoArquivo = dialogArquivo.FileName;
                 try {
                     // Processa os dados do arquivo e transforma em uma lista de jogadores.
-                    List<Jogador> jogadors = CarregarJogadores(caminhoArquivo);
+                    List<Jogador> jogadores = CarregarJogadores(caminhoArquivo);
+                    AtualizarGraficoAlturas(jogadores);
+                    AtualizarGraficoIdades(jogadores);
                 }
                 catch (Exception ex) {
                     MessageBox.Show(ex.Message);
                 }
+            }
+        }
+
+        private void AtualizarGraficoIdades(List<Jogador> jogadores) {
+            MessageBox.Show("Atualizado o gráfico de idades");
+        }
+
+        private void AtualizarGraficoAlturas(List<Jogador> jogadores) {
+            chrAlturas.Series.Clear();
+            var resultados = jogadores.GroupBy(j => new { j.Equipe })
+                .Select(j => new {
+                    j.Key.Equipe,
+                    AlturaMedia = j.Average(n => n.Altura)
+                }).ToList();
+            foreach (var resultado in resultados) {
+                Series series = chrAlturas.Series.Add(resultado.Equipe);
+                series.Points.Add(resultado.AlturaMedia);
             }
         }
 
